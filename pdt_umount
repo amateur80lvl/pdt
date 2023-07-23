@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+'''
+Plausible Deniabity Toolkit
+
+Unmount volume.
+
+Example:
+
+    pdt_unmount /mnt/my-hidden-volume
+
+Copyright 2022 amateur80lvl
+License: BSD, see LICENSE for details.
+'''
+
+import sys
+
+from pdt_base import Invoke
+
+directory = sys.argv[1]
+
+invoke = Invoke()
+invoke.locrypt_unmount(directory)
