@@ -150,7 +150,14 @@ class Invoke:
         for line in lines:
             device, size, used, avail, percentage, mount_point = line.strip().split()
             if mount_point == '/':
-                return device
+                if device != '/dev/root':
+                    return device
+                kcmdline = self.run('cat /proc/cmdline').stdout
+                root = re.search('root=(.+?)(\\s|$)', kcmdline).group(1)
+                root = root.split('=', 1)[-1]
+                for line in self.run('blkid').stdout.splitlines():
+                    if root in line:
+                        return line.split(':', 1)[0]
         raise Exception('Unable to find root device')
 
     def is_encrypted_volume_active(self, volume_name):
